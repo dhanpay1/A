@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: #0b111e; color: #ffffff; padding: 15px; }
+
+        /* हेडर स्टाइल */
+        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-top: 5px; }
+        .back-btn { text-decoration: none; color: #ff8c00; font-size: 22px; font-weight: bold; cursor: pointer; }
+        .header h3 { font-size: 20px; color: #ffffff; font-weight: 600; }
+
+        /* टॉप 2 ऑप्शंस कंटेनर (Deposit & Withdraw) */
+        .tab-container { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 15px; }
+        .tab-btn { padding: 8px 24px; border: none; background: transparent; color: #8fa0bc; font-size: 14px; font-weight: 500; cursor: pointer; border-radius: 20px; transition: 0.2s; }
+        
+        /* एक्टिव बटन स्टाइल (ऑरेंज शेड) */
+        .tab-btn.active { background: #ff8c00; color: #ffffff; font-weight: bold; }
+
+        /* नो रिकॉर्ड स्क्रीन डिजाइन */
+        .no-record-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; text-align: center; color: #8fa0bc; gap: 10px; }
+        .no-record-icon { font-size: 40px; opacity: 0.6; }
+        .no-record-text { font-size: 15px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- हेडर -->
+    <div class="header">
+        <a href="mine.html" class="back-btn">⬅</a>
+        <h3>Transaction History</h3>
+    </div>
+
+    <!-- टॉप 2 ऑप्शंस -->
+    <div class="tab-container">
+        <button id="btn-deposit" class="tab-btn active" onclick="switchTab('deposit')">Deposit</button>
+        <button id="btn-withdraw" class="tab-btn" onclick="switchTab('withdraw')">Withdraw</button>
+    </div>
+
+    <!-- ट्रांजैक्शंस लिस्ट -->
+    <div class="history-list">
+        
+        <!-- DEPOSIT SECTION (No Record) -->
+        <div id="deposit-section" class="tab-content">
+            <div class="no-record-container">
+                <span class="no-record-icon">📄</span>
+                <span class="no-record-text">No record</span>
+            </div>
+        </div>
+
+        <!-- WITHDRAW SECTION (No Record) -->
+        <div id="withdraw-section" class="tab-content" style="display: none;">
+            <div class="no-record-container">
+                <span class="no-record-icon">📄</span>
+                <span class="no-record-text">No record</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tabType) {
+            let depositBtn = document.getElementById('btn-deposit');
+            let withdrawBtn = document.getElementById('btn-withdraw');
+            
+            let depositSec = document.getElementById('deposit-section');
+            let withdrawSec = document.getElementById('withdraw-section');
+
+            if (tabType === 'deposit') {
+                depositBtn.classList.add('active');
+                withdrawBtn.classList.remove('active');
+                depositSec.style.display = 'block';
+                withdrawSec.style.display = 'none';
+            } else {
+                withdrawBtn.classList.add('active');
+                depositBtn.classList.remove('active');
+                depositSec.style.display = 'none';
+                withdrawSec.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
