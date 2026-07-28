@@ -1,6 +1,3 @@
-<?php 
-include("config.php"); 
-?>
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -45,7 +42,7 @@ include("config.php");
 
     <div class="balance-card">
         <span>Total Assets (कुल संपत्ति)</span>
-        <h1 id="main-balance">₹1000.00</h1>
+        <h1 id="main-balance">₹200.00</h1>
         
         <div class="card-actions" style="display: flex; justify-content: center; align-items: center; gap: 15px; width: 100%; margin-top: 20px;">
             <a href="recharge.html" style="text-decoration: none; flex: 1;">
@@ -132,6 +129,15 @@ updateBalanceUI();
         document.getElementById('dashboard-balance-num').innerText = "₹" + currentWallet.toFixed(2);
     });
 </script>
+<!-- Custom Professional Pop-up -->
+<div id="recharge-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 10000;">
+    <div style="background: #111a2e; border: 1px solid #1e293b; padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <span style="font-size: 45px; margin-bottom: 12px; display: block; color: #ff4d4d;">⚠️</span>
+        <div style="font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 8px;">Galti / Error</div>
+        <div id="popup-message-text" style="font-size: 14px; color: #8a99a8; margin-bottom: 20px; line-height: 1.4;">UTR Number poore 12-digit ka hona chahiye!</div>
+        <button style="background: #00ffcc; color: #0b111e; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer;" onclick="closeRechargePopup()">OK</button>
+    </div>
+</div>
 
 </body>
 </html>
