@@ -28,6 +28,27 @@
         .quick-item:hover .icon-svg, .quick-item:active .icon-svg { fill: #00ffcc; filter: drop-shadow(0 0 3px rgba(0,255,204,0.4)); }
         .quick-item p { font-size: 11px; color: #cbd5e1; font-weight: 500; }
 
+        /* --- NEW ADDED PROMO BANNER STYLE --- */
+        .promo-banner { 
+            background: linear-gradient(135deg, #142037 0%, #0f182a 100%); 
+            border: 1px solid #1e293b; 
+            border-radius: 15px; 
+            padding: 22px 20px; 
+            margin-bottom: 25px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            position: relative; 
+            overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+        }
+        .banner-content { z-index: 2; }
+        .banner-percentage { font-size: 42px; font-weight: 900; color: #00ffcc; line-height: 1; filter: drop-shadow(0 0 5px rgba(0,255,204,0.3)); }
+        .banner-text-main { font-size: 16px; font-weight: bold; color: #ffffff; letter-spacing: 0.5px; margin-top: 5px; }
+        .banner-text-sub { font-size: 11px; color: #8fa0bc; margin-top: 5px; }
+        .banner-graphic { z-index: 1; position: absolute; right: 20px; bottom: 8px; }
+        .banner-graphic-svg { width: 65px; height: 65px; fill: rgba(0, 255, 204, 0.12); }
+
         /* FIXED BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background-color: #111827; border-top: 2px solid #1e293b; display: flex; justify-content: space-around; padding: 12px 0; z-index: 9999; }
         .nav-item { background: none; border: none; color: #8fa0bc; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; width: 20%; font-size: 11px; text-decoration: none; }
@@ -83,6 +104,21 @@
         </div>
     </div>
 
+    <!-- --- NEW ADDED 12% COMMISSION BANNER --- -->
+    <div class="promo-banner">
+        <div class="banner-content">
+            <div class="banner-percentage">12%</div>
+            <div class="banner-text-main">COMMISSION PER ORDER</div>
+            <div class="banner-text-sub">Maximize your daily earnings today!</div>
+        </div>
+        <!-- Background Graphic SVG (Trend Chart Icon) -->
+        <div class="banner-graphic">
+            <svg class="banner-graphic-svg" viewBox="0 0 24 24">
+                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/>
+            </svg>
+        </div>
+    </div>
+
     <!-- FIXED BOTTOM NAV (HOME ACTIVE) -->
     <div class="bottom-nav">
         <a href="dashboard.html" class="nav-item active">
@@ -110,12 +146,10 @@
     <!-- CLEAN & CLEANED SINGLE BALANCING SCRIPT -->
     <script>
         window.onload = function() {
-            // Sahi fix single key "user_balance" check logic
             if (!localStorage.getItem("user_balance")) {
                 localStorage.setItem("user_balance", "200.00");
             }
             
-            // Screen par fix decimal ke sath balance loading
             var currentBalance = parseFloat(localStorage.getItem("user_balance") || "200.00");
             document.getElementById("main-balance").innerText = "₹" + currentBalance.toFixed(2);
 
@@ -124,22 +158,6 @@
                 document.getElementById("display-id").innerText = "Account: " + savedPhone;
             }
         };
-
-        // Custom Error Popup controls
-        function closeRechargePopup() {
-            document.getElementById('recharge-popup').style.display = 'none';
-        }
     </script>
-
-    <!-- Custom Professional Pop-up -->
-    <div id="recharge-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 10000;">
-        <div style="background: #111a2e; border: 1px solid #1e293b; padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <span style="font-size: 45px; margin-bottom: 12px; display: block; color: #ff4d4d;">⚠️</span>
-            <div style="font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 8px;">Galti / Error</div>
-            <div id="popup-message-text" style="font-size: 14px; color: #8a99a8; margin-bottom: 20px; line-height: 1.4;">UTR Number poore 12-digit ka hona chahiye!</div>
-            <button style="background: #00ffcc; color: #0b111e; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer;" onclick="closeRechargePopup()">OK</button>
-        </div>
-    </div>
-
 </body>
 </html>
