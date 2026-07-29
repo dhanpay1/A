@@ -61,6 +61,33 @@ $db_balance = isset($user['balance']) ? $user['balance'] : null;
         .nav-item { background: none; border: none; color: #8fa0bc; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; width: 20%; font-size: 12px; text-decoration: none; }
         .nav-item.active { color: #00ffcc; font-weight: bold; }
         .nav-icon { font-size: 20px; display: block; }
+
+        /* PREMIUM OFFLINE POPUP DIALOG STYLE */
+        .custom-popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 17, 30, 0.85); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10000; visibility: hidden; opacity: 0;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+        .custom-popup-box {
+            background: #141d30; border: 1px solid #1e293b; border-radius: 16px;
+            width: 85%; max-width: 340px; padding: 25px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); transform: scale(0.8);
+            transition: transform 0.2s ease;
+        }
+        .popup-icon { font-size: 45px; margin-bottom: 12px; display: inline-block; }
+        .popup-icon.error { color: #ff4d4d; }
+        .popup-icon.success { color: #00ffcc; }
+        .popup-title { font-size: 18px; font-weight: bold; margin-bottom: 8px; color: #ffffff; }
+        .popup-desc { font-size: 13px; color: #8fa0bc; line-height: 1.5; margin-bottom: 20px; }
+        .popup-btn {
+            background: #1e293b; color: #ffffff; border: 1px solid #334155;
+            padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: bold;
+            cursor: pointer; min-width: 100px;
+        }
+        .custom-popup-overlay.show { visibility: visible; opacity: 1; }
+        .custom-popup-overlay.show .custom-popup-box { transform: scale(1); }
     </style>
 </head>
 <body>
@@ -72,27 +99,31 @@ $db_balance = isset($user['balance']) ? $user['balance'] : null;
 
     <h3 class="section-title">Withdrawal Request</h3>
     <div class="withdraw-card">
-        <!-- Yahan humne function badal diya hai jo paisa minus karega -->
         <form onsubmit="executeWithdraw(event)">
             <div class="form-group">
-                <label>Enter Amount (न्यूनतम ₹300)</label>
+                <label>Enter Amount (Min ₹300)</label>
                 <input type="number" id="withdraw-amount" placeholder="Enter amount to withdraw" min="300" required>
             </div>
             
             <div class="form-group">
-                <label>Bank Account Number / UPI ID</label>
-                <input type="text" placeholder="Enter Bank A/C or UPI ID" required>
+                <label>Enter UPI ID</label>
+                <input type="text" id="withdraw-upi" placeholder="Enter Bank A/C or UPI ID" required>
             </div>
 
-            <div class="form-group">
-                <label>IFSC Code (Only for Bank Account)</label>
-                <input type="text" placeholder="Enter IFSC Code (Optional)">
-            </div>
-
-            <p class="info-text">* Note: Wait 15-30 Minutes To Receive Money In Your Account </p>
+            <p class="info-text">* Note- Under 25-30 Minutes Receive Money In Your Account</p>
 
             <button type="submit" class="submit-btn">Submit Withdraw</button>
         </form>
+    </div>
+
+    <!-- OFFLINE CUSTOM POPUP DIALOG -->
+    <div id="customAlert" class="custom-popup-overlay">
+        <div class="custom-popup-box">
+            <span id="popIcon" class="popup-icon">⚠️</span>
+            <div id="popTitle" class="popup-title">Title</div>
+            <div id="popDesc" class="popup-desc">Description text.</div>
+            <button onclick="closeCustomAlert()" id="popBtn" class="popup-btn">ठीक है</button>
+        </div>
     </div>
 
     <!-- BOTTOM NAV -->
@@ -115,7 +146,6 @@ $db_balance = isset($user['balance']) ? $user['balance'] : null;
     </div>
 
 <script>
-    // Page load hone par balance dikhane ke liye
     function updateDisplay() {
         var phpBalance = "<?php echo $db_balance; ?>";
         var balanceTag = document.getElementById("withdraw-balance");
@@ -123,33 +153,74 @@ $db_balance = isset($user['balance']) ? $user['balance'] : null;
         if (phpBalance && phpBalance !== "<?" + "php echo $db_balance; ?>") {
             balanceTag.innerText = "₹" + parseFloat(phpBalance).toFixed(2);
         } else {
-            var currentBalance = localStorage.getItem("user_balance") || "500.00";
+            // BALANCE FIXED TO 200.00 FOR TESTING
+            var currentBalance = localStorage.getItem("user_balance") || "200.00";
             balanceTag.innerText = "₹" + parseFloat(currentBalance).toFixed(2);
         }
     }
 
     window.onload = updateDisplay;
 
-    // Withdraw submit karne par paisa minus karne ka function
+    // POPUP SHOW/HIDE FUNCTIONS
+    function showCustomAlert(type, title, desc, btnText, btnColor) {
+        document.getElementById("popIcon").innerText = (type === 'error') ? '⚠️' : '✅';
+        document.getElementById("popIcon").className = "popup-icon " + type;
+        document.getElementById("popTitle").innerText = title;
+        document.getElementById("popDesc").innerText = desc;
+        
+        var btn = document.getElementById("popBtn");
+        btn.innerText = btnText;
+        btn.style.backgroundColor = btnColor;
+        btn.style.borderColor = btnColor;
+        
+        document.getElementById("customAlert").classList.add("show");
+    }
+
+    function closeCustomAlert() {
+        document.getElementById("customAlert").classList.remove("show");
+    }
+
     function executeWithdraw(event) {
         event.preventDefault();
         
         var amountInput = document.getElementById("withdraw-amount").value;
         var amountToWithdraw = parseFloat(amountInput);
-        var currentBalance = parseFloat(localStorage.getItem("user_balance") || "500.00");
+        
+        var phpBalance = "<?php echo $db_balance; ?>";
+        var currentBalance;
+        
+        if (phpBalance && phpBalance !== "<?" + "php echo $db_balance; ?>") {
+            currentBalance = parseFloat(phpBalance);
+        } else {
+            // BACKUP BALANCE FIXED TO 200.00
+            currentBalance = parseFloat(localStorage.getItem("user_balance") || "200.00");
+        }
 
         if (amountToWithdraw > currentBalance) {
-            alert("Error: Aapke paas itna balance nahi hai!");
+            showCustomAlert(
+                'error', 
+                'अपूर्ण शेष राशि!', 
+                'आपके वॉलेट में इस निकासी के लिए पर्याप्त बैलेंस उपलब्ध नहीं है।', 
+                'ठीक है', 
+                '#ff4d4d'
+            );
         } else {
-            // Balance minus kar rahe hain
-            var newBalance = currentBalance - amountToWithdraw;
-            localStorage.setItem("user_balance", newBalance.toFixed(2));
+            if (!phpBalance || phpBalance === "<?" + "php echo $db_balance; ?>") {
+                var newBalance = currentBalance - amountToWithdraw;
+                localStorage.setItem("user_balance", newBalance.toFixed(2));
+                updateDisplay();
+            }
             
-            // Screen par naya balance update kar rahe hain
-            updateDisplay();
-            
-            alert("Success: ₹" + amountToWithdraw + " ka withdrawal request lag gaya hai! Balance debit ho gaya.");
-            document.getElementById("withdraw-amount").value = ""; // Input box khali karne ke liye
+            showCustomAlert(
+                'success', 
+                'अनुरोध सफल!', 
+                '₹' + amountToWithdraw + 'Withdraw Successful', 
+              , 
+                '#00ffcc'
+            );
+
+            document.getElementById("withdraw-amount").value = ""; 
+            document.getElementById("withdraw-upi").value = ""; 
         }
     }
 </script>
