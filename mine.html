@@ -9,10 +9,18 @@
         body { background-color: #0b111e; color: #ffffff; padding: 15px 15px 100px 15px; }
         
         /* यूजर प्रोफाइल कार्ड */
-        .profile-card { background: linear-gradient(135deg, #16223f 0%, #0f172a 100%); border: 1px solid #1e293b; border-radius: 15px; padding: 20px; text-align: center; margin-bottom: 15px; position: relative; }
-        .avatar { font-size: 50px; margin-bottom: 10px; display: block; }
-        .profile-card h3 { font-size: 18px; color: #00ffcc; margin-bottom: 5px; }
-        .profile-card p { font-size: 12px; color: #8fa0bc; }
+        .profile-card { background: linear-gradient(135deg, #16223f 0%, #0f172a 100%); border: 1px solid #1e293b; border-radius: 15px; padding: 25px 20px 20px 20px; text-align: center; margin-bottom: 15px; position: relative; }
+        
+        /* ===================================================
+           PREMIUM NEON AVATAR DESIGN
+        ====================================================== */
+        .avatar-container { display: flex; justify-content: center; align-items: center; margin-bottom: 12px; position: relative; }
+        .premium-avatar { width: 85px; height: 85px; background: radial-gradient(circle, #1e293b 0%, #0f172a 100%); border: 2px solid #00ffcc; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 20px rgba(0, 255, 204, 0.25), inset 0 0 15px rgba(0, 255, 204, 0.15); position: relative; }
+        .premium-avatar svg { width: 42px; height: 42px; fill: #00ffcc; filter: drop-shadow(0 0 4px rgba(0, 255, 204, 0.5)); }
+        .vip-tag { position: absolute; bottom: -5px; background: linear-gradient(90deg, #00ffcc, #00b3ff); color: #0b111e; font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; box-shadow: 0 2px 8px rgba(0, 255, 204, 0.4); border: 1px solid #0b111e; }
+        
+        .profile-card h3 { font-size: 18px; color: #ffffff; margin-bottom: 5px; font-weight: 600; }
+        .profile-card p { font-size: 12px; color: #8fa0bc; background: rgba(30, 41, 59, 0.5); display: inline-block; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-top: 4px; }
 
         /* टोटल डिपॉजिट और विड्रॉ सेक्शन */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -23,19 +31,26 @@
         .withdraw-amount { color: #ff4d4d; } 
 
         /* सेटिंग्स/मेन्यू लिस्ट */
-        .menu-list { background: #141d30; border-radius: 12px; border: 1px solid #1e293b; overflow: hidden; margin-bottom: 20px; }
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1e293b; cursor: pointer; text-decoration: none; color: #ffffff; }
+        .menu-list { background: #141d30; border-radius: 12px; border: 1px solid #1e293b; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #1e293b; cursor: pointer; text-decoration: none; color: #ffffff; transition: background 0.2s; }
+        .menu-item:active { background: #1e293b; }
         .menu-item:last-child { border-bottom: none; }
-        .menu-left { display: flex; align-items: center; gap: 12px; }
-        .menu-icon { font-size: 18px; }
+        .menu-left { display: flex; align-items: center; gap: 14px; }
+        
+        /* PREMIUM MENU ICONS (SVG) */
+        .menu-svg { width: 18px; height: 18px; fill: #8fa0bc; display: block; }
+        .menu-item:hover .menu-svg, .menu-item:active .menu-svg { fill: #00ffcc; }
+        .logout-item .menu-svg { fill: #ff4d4d !important; }
+        
         .menu-title { font-size: 14px; color: #cbd5e1; }
-        .arrow-right { color: #8fa0bc; font-size: 14px; }
+        .arrow-right { color: #475569; font-size: 14px; font-weight: bold; }
 
         /* FIXED BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background-color: #111827; border-top: 2px solid #1e293b; display: flex; justify-content: space-around; padding: 14px 0; z-index: 9999; }
-        .nav-item { background: none; border: none; color: #8fa0bc; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; width: 20%; font-size: 12px; text-decoration: none; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background-color: #111827; border-top: 2px solid #1e293b; display: flex; justify-content: space-around; padding: 12px 0; z-index: 9999; }
+        .nav-item { background: none; border: none; color: #8fa0bc; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; width: 20%; font-size: 11px; text-decoration: none; }
         .nav-item.active { color: #00ffcc; font-weight: bold; }
-        .nav-icon { font-size: 20px; display: block; }
+        .nav-svg { width: 20px; height: 20px; fill: #8fa0bc; display: block; }
+        .nav-item.active .nav-svg { fill: #00ffcc; filter: drop-shadow(0 0 3px rgba(0, 255, 204, 0.4)); }
 
         /* CUSTOM POP-UP STYLE */
         .popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 10000; }
@@ -50,7 +65,15 @@
 
     <!-- प्रोफाइल कार्ड सेक्शन -->
     <div class="profile-card">
-        <span class="avatar">👤</span>
+        <!-- RENDER PREMIUM NEON AVATAR -->
+        <div class="avatar-container">
+            <div class="premium-avatar">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <div class="vip-tag">VIP 1</div>
+            </div>
+        </div>
         <h3 id="display-id">ID: Dhan_user786</h3>
         <p id="display-invite">Invite Code: 559120</p>
     </div>
@@ -73,7 +96,8 @@
         <!-- Transaction History Link -->
         <a href="transactions.html" class="menu-item">
             <div class="menu-left">
-                <span class="menu-icon">📊</span>
+                <!-- Premium History SVG -->
+                <svg class="menu-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2zm-4 8H7v-2h6v2z"/></svg>
                 <span class="menu-title">Transaction History</span>
             </div>
             <span class="arrow-right">➔</span>
@@ -81,7 +105,8 @@
 
         <div class="menu-item" onclick="changePassword()">
             <div class="menu-left">
-                <span class="menu-icon">🔒</span>
+                <!-- Premium Lock SVG -->
+                <svg class="menu-svg" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                 <span class="menu-title">Change Password</span>
             </div>
             <span class="arrow-right">➔</span>
@@ -89,15 +114,17 @@
 
         <a href="tg://resolve?domain=ankushhhzhsys" class="menu-item">
             <div class="menu-left">
-                <span class="menu-icon">🛠️</span>
+                <!-- Premium Support/Gear SVG -->
+                <svg class="menu-svg" viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
                 <span class="menu-title">Customer Support</span>
             </div>
             <span class="arrow-right">➔</span>
         </a>
 
-        <div class="menu-item" onclick="handleLogout()" style="border-bottom: none;">
+        <div class="menu-item logout-item" onclick="handleLogout()" style="border-bottom: none;">
             <div class="menu-left">
-                <span class="menu-icon" style="color: #ff4d4d;">🚪</span>
+                <!-- Premium Logout SVG -->
+                <svg class="menu-svg" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
                 <span class="menu-title" style="color: #ff4d4d; font-weight: bold;">Logout Account</span>
             </div>
             <span class="arrow-right" style="color: #ff4d4d;">➔</span>
@@ -107,28 +134,29 @@
     <!-- FIXED BOTTOM NAV -->
     <div class="bottom-nav">
         <a href="dashboard.html" class="nav-item">
-            <span class="nav-icon">🏠</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             <span>Home</span>
         </a>
         <a href="buy.html" class="nav-item">
-            <span class="nav-icon">📊</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
             <span>Buy</span>
         </a>
         <a href="orders.html" class="nav-item">
-            <span class="nav-icon">🛍️</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12H18.5c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2z"/></svg>
             <span>Orders</span>
         </a>
+        <!-- FIXED BOTTOM NAV (बचा हुआ हिस्सा) -->
         <a href="withdraw.html" class="nav-item">
-            <span class="nav-icon">💲</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
             <span>Withdraw</span>
         </a>
         <a href="mine.html" class="nav-item active">
-            <span class="nav-icon">👤</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             <span>Mine</span>
         </a>
     </div>
 
-    <!-- इन-बिल्ट कस्टम पॉप-अप HTML -->
+    <!-- इन-बिल्ट कस्टम पॉप-अप HTML (पूरी तरह सुरक्षित) -->
     <div id="custom-popup" class="popup-overlay">
         <div class="popup-box">
             <span id="p-icon" class="popup-icon">✔️</span>
@@ -139,9 +167,11 @@
         </div>
     </div>
 
+    <!-- JAVASCRIPT FUNCTIONS BLOCK -->
     <script>
         var nextStep = null;
 
+        // पेज लोड होने पर सेव किया हुआ नंबर आईडी की जगह दिखाएगा
         window.onload = function() {
             var savedPhone = localStorage.getItem("saved_phone");
             if(savedPhone) {
@@ -149,6 +179,7 @@
             }
         };
 
+        // नया प्रीमियम पॉप-अप दिखाने का फंक्शन
         function showPopup(title, text, icon, type, callback) {
             document.getElementById('p-title').innerText = title;
             document.getElementById('p-text').innerText = text;
@@ -168,21 +199,42 @@
             nextStep = callback;
         }
 
+        // पॉप-अप बंद करने का फंक्शन
         function closePopup() {
             document.getElementById('custom-popup').style.display = 'none';
-            if(nextStep) { nextStep(); nextStep = null; }
+            if(nextStep) { 
+                nextStep(); 
+                nextStep = null; 
+            }
         }
 
+        // चेंज पासवर्ड पर क्लिक करने का एक्शन
         function changePassword() {
-            showPopup("🔒 Security", "Redirecting to password update page...", "🔑", "success");
-        }
-
-        function handleLogout() {
-            showPopup("Log Out", "Are you sure you want to exit?", "🚪", "error", function() {
-                localStorage.clear();
-                window.location.href = 'login.html';
+            showPopup("🔒 Security", "Redirecting to password update page...", "🔑", "success", function() {
+                window.location.href = "change_password.html"; // अपनी पासवर्ड चेंज फाइल का नाम यहाँ डालें
             });
         }
-    </script>
+        
+        // लॉगआउट करने का एक्शन
+function handleLogout() {
+    showPopup("🚪 Logout", "क्या आप सच में लॉगआउट करना चाहते हैं?", "⚠️", "error", function() {
+        // यूजर का डेटा साफ़ करने के लिए
+        localStorage.removeItem("saved_phone"); 
+        
+        // यहाँ अपनी रजिस्टर फ़ाइल का सही नाम डालें (जैसे register.html या index.php)
+        window.location.href = "register.html"; 
+    });
+}
+function handleLogout() {
+    showPopup("🚪 Logout", "क्या आप सच में लॉगआउट करना चाहते हैं?", "⚠️", "error", function() {
+        // यूजर का डेटा साफ़ करने के लिए
+        localStorage.removeItem("saved_phone"); 
+        
+        // यहाँ अपनी रजिस्टर फ़ाइल का सही नाम डालें (जैसे register.html या index.php)
+        window.location.href = "index.html"; 
+    });
+}
+   </script>
+
 </body>
 </html>

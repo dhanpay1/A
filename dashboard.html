@@ -16,19 +16,24 @@
         .balance-card span { color: #8fa0bc; font-size: 12px; }
         .balance-card h1 { font-size: 32px; color: #ffffff; margin: 8px 0 15px 0; }
         .card-actions { display: flex; gap: 12px; }
-        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; }
-        .btn-recharge { background: #00ffcc; color: #0b111e; }
-        .btn-withdraw { background: #1e293b; color: #00ffcc; border: 1px solid #00ffcc; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; text-transform: uppercase; }
+        .btn-recharge { background: linear-gradient(90deg, #00ffcc, #00b3ff); color: #0b111e; box-shadow: 0 4px 12px rgba(0, 255, 204, 0.2); }
+        .btn-withdraw { background: #ef4444; color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
 
+        /* PREMIUM QUICK GRID */
         .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 25px; }
-        .quick-item { background: #141d30; padding: 12px 5px; border-radius: 10px; text-align: center; cursor: pointer; border: 1px solid #1e293b; }
-        .quick-item .icon { font-size: 20px; margin-bottom: 5px; display: block; }
-        .quick-item p { font-size: 11px; color: #cbd5e1; }
+        .quick-item { background: #141d30; padding: 14px 5px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #1e293b; transition: background 0.2s; }
+        .quick-item:active { background: #1e293b; }
+        .quick-item .icon-svg { width: 22px; height: 22px; margin: 0 auto 6px auto; display: block; fill: #8fa0bc; }
+        .quick-item:hover .icon-svg, .quick-item:active .icon-svg { fill: #00ffcc; filter: drop-shadow(0 0 3px rgba(0,255,204,0.4)); }
+        .quick-item p { font-size: 11px; color: #cbd5e1; font-weight: 500; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background-color: #111827; border-top: 2px solid #1e293b; display: flex; justify-content: space-around; padding: 14px 0; z-index: 9999; }
-        .nav-item { background: none; border: none; color: #8fa0bc; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; width: 20%; font-size: 12px; text-decoration: none; }
+        /* FIXED BOTTOM NAV */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; background-color: #111827; border-top: 2px solid #1e293b; display: flex; justify-content: space-around; padding: 12px 0; z-index: 9999; }
+        .nav-item { background: none; border: none; color: #8fa0bc; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; width: 20%; font-size: 11px; text-decoration: none; }
         .nav-item.active { color: #00ffcc; font-weight: bold; }
-        .nav-icon { font-size: 20px; display: block; }
+        .nav-svg { width: 20px; height: 20px; fill: #8fa0bc; display: block; }
+        .nav-item.active .nav-svg { fill: #00ffcc; filter: drop-shadow(0 0 3px rgba(0, 255, 204, 0.4)); }
     </style>
 </head>
 <body>
@@ -49,95 +54,92 @@
                 <button class="action-btn btn-recharge" style="width: 100%; margin: 0;">Deposit</button>
             </a>
             <a href="withdraw.html" style="text-decoration: none; flex: 1;">
-                <button class="action-btn btn-withdraw" style="background: #ef4444; border: none; color: white; margin: 0; width: 100%;">Withdraw</button>
+                <button class="action-btn btn-withdraw" style="margin: 0; width: 100%;">Withdraw</button>
             </a>
         </div>
     </div>
 
+    <!-- PREMIUM QUICK GRID WITH SVG ICONS -->
     <div class="quick-grid">
-        <div class="quick-item"><span class="icon">📲</span><p>App</p></div>
-        <div class="quick-item" onclick="window.location.href='buy.html'"><span class="icon">📊</span><p>Buy</p></div>
-        <div class="quick-item" onclick="window.location.href='withdraw.html'"><span class="icon">💲</span><p>Withdraw</p></div>
-        <div class="quick-item" onclick="window.open('https://telegram.dog', '_blank')"><span class="icon">🛠️</span><p>Online</p></div>
+        <div class="quick-item">
+            <!-- App Icon (Mobile) -->
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+            <p>App</p>
+        </div>
+        <div class="quick-item" onclick="window.location.href='buy.html'">
+            <!-- Buy Icon (Chart) -->
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+            <p>Buy</p>
+        </div>
+        <div class="quick-item" onclick="window.location.href='withdraw.html'">
+            <!-- Withdraw Icon (Dollar) -->
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+            <p>Withdraw</p>
+        </div>
+        <div class="quick-item" onclick="window.open('https://telegram.dog', '_blank')">
+            <!-- Support Icon (Telegram/Online) -->
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20.66 6.98a.996.996 0 0 0-1.01-.07l-15 6c-.4.16-.65.56-.65 1s.24.84.63.99l3.52 1.32 1.95 2.6c.22.3.57.48.94.48.12 0 .24-.02.36-.06.4-.14.7-.47.81-.88l1.01-3.71 4.88 3.66c.24.18.53.28.83.28.3 0 .59-.1.83-.29.41-.33.59-.86.46-1.38l-3-12c-.08-.34-.33-.61-.66-.73z"/></svg>
+            <p>Online</p>
+        </div>
     </div>
 
-    <!-- BOTTOM NAV -->
+    <!-- FIXED BOTTOM NAV (HOME ACTIVE) -->
     <div class="bottom-nav">
         <a href="dashboard.html" class="nav-item active">
-            <span class="nav-icon">🏠</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             <span>Home</span>
         </a>
         <a href="buy.html" class="nav-item">
-            <span class="nav-icon">📊</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
             <span>Buy</span>
         </a>
         <a href="orders.html" class="nav-item">
-            <span class="nav-icon">🛍️</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12H18.5c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2z"/></svg>
             <span>Orders</span>
         </a>
         <a href="withdraw.html" class="nav-item">
-            <span class="nav-icon">💲</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
             <span>Withdraw</span>
         </a>
         <a href="mine.html" class="nav-item">
-            <span class="nav-icon">👤</span>
+            <svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             <span>Mine</span>
         </a>
     </div>
 
+    <!-- CLEAN & CLEANED SINGLE BALANCING SCRIPT -->
     <script>
         window.onload = function() {
-            // Agar pehle se balance set nahi hai, toh ₹500 set kar dega
+            // Sahi fix single key "user_balance" check logic
             if (!localStorage.getItem("user_balance")) {
                 localStorage.setItem("user_balance", "200.00");
             }
             
-            // Balance screen par show karne ke liye
-            var currentBalance = localStorage.getItem("user_balance");
-            document.getElementById("main-balance").innerText = "₹" + currentBalance;
+            // Screen par fix decimal ke sath balance loading
+            var currentBalance = parseFloat(localStorage.getItem("user_balance") || "200.00");
+            document.getElementById("main-balance").innerText = "₹" + currentBalance.toFixed(2);
 
             var savedPhone = localStorage.getItem("saved_phone");
             if(savedPhone) {
-                document.getElementById("display-id").innerText = "Account:" + savedPhone;
+                document.getElementById("display-id").innerText = "Account: " + savedPhone;
             }
         };
-    </script>
-    <script>
-// Shuruat me user ko demo ke liye ₹200 balance dene ke liye
-if (!localStorage.getItem('wallet_balance')) {
-    localStorage.setItem('wallet_balance', '200'); 
-}
 
-// Screen par balance show karne ka function
-function updateBalanceUI() {
-    let currentBalance = localStorage.getItem('wallet_balance');
-    document.getElementById('user-balance').innerText = "₹" + currentBalance;
-}
-
-// Page load hote hi balance dikhayein
-updateBalanceUI();
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Agar pehle se koi balance store nahi hai toh 200 set karega
-        if (!localStorage.getItem('wallet_balance')) {
-            localStorage.setItem('wallet_balance', '200');
+        // Custom Error Popup controls
+        function closeRechargePopup() {
+            document.getElementById('recharge-popup').style.display = 'none';
         }
+    </script>
 
-        // Har baar sahi live balance screen par load karega
-        let currentWallet = parseFloat(localStorage.getItem('wallet_balance') || '200');
-        document.getElementById('dashboard-balance-num').innerText = "₹" + currentWallet.toFixed(2);
-    });
-</script>
-<!-- Custom Professional Pop-up -->
-<div id="recharge-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 10000;">
-    <div style="background: #111a2e; border: 1px solid #1e293b; padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-        <span style="font-size: 45px; margin-bottom: 12px; display: block; color: #ff4d4d;">⚠️</span>
-        <div style="font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 8px;">Galti / Error</div>
-        <div id="popup-message-text" style="font-size: 14px; color: #8a99a8; margin-bottom: 20px; line-height: 1.4;">UTR Number poore 12-digit ka hona chahiye!</div>
-        <button style="background: #00ffcc; color: #0b111e; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer;" onclick="closeRechargePopup()">OK</button>
+    <!-- Custom Professional Pop-up -->
+    <div id="recharge-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 10000;">
+        <div style="background: #111a2e; border: 1px solid #1e293b; padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <span style="font-size: 45px; margin-bottom: 12px; display: block; color: #ff4d4d;">⚠️</span>
+            <div style="font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 8px;">Galti / Error</div>
+            <div id="popup-message-text" style="font-size: 14px; color: #8a99a8; margin-bottom: 20px; line-height: 1.4;">UTR Number poore 12-digit ka hona chahiye!</div>
+            <button style="background: #00ffcc; color: #0b111e; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer;" onclick="closeRechargePopup()">OK</button>
+        </div>
     </div>
-</div>
 
 </body>
 </html>
