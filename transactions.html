@@ -7,78 +7,169 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background-color: #0b111e; color: #ffffff; padding: 15px; }
-
-        /* हेडर स्टाइल */
         .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-top: 5px; }
         .back-btn { text-decoration: none; color: #ff8c00; font-size: 22px; font-weight: bold; cursor: pointer; }
-        .header h3 { font-size: 20px; color: #ffffff; font-weight: 600; }
-
-        /* टॉप 2 ऑप्शंस कंटेनर (Deposit & Withdraw) */
+        .header h3 { font-size: 20px; color: #ffffff; font-weight: 600; cursor: pointer; user-select: none; }
         .tab-container { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 15px; }
         .tab-btn { padding: 8px 24px; border: none; background: transparent; color: #8fa0bc; font-size: 14px; font-weight: 500; cursor: pointer; border-radius: 20px; transition: 0.2s; }
-        
-        /* एक्टिव बटन स्टाइल (ऑरेंज शेड) */
         .tab-btn.active { background: #ff8c00; color: #ffffff; font-weight: bold; }
-
-        /* नो रिकॉर्ड स्क्रीन डिजाइन */
         .no-record-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; text-align: center; color: #8fa0bc; gap: 10px; }
         .no-record-icon { font-size: 40px; opacity: 0.6; }
         .no-record-text { font-size: 15px; font-weight: 500; }
+        .history-card { background: #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .card-left { display: flex; flex-direction: column; gap: 5px; }
+        .card-title { font-size: 16px; font-weight: bold; }
+        .card-date { font-size: 12px; color: #8fa0bc; }
+        .card-amount { font-size: 18px; font-weight: bold; }
+        .amount-deposit { color: #4cdf79; }
+        .amount-withdraw { color: #ff4d4d; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); }
+        .modal-content { background-color: #1e293b; margin: 30% auto; padding: 20px; border-radius: 12px; width: 90%; max-width: 340px; text-align: center; box-shadow: 0px 4px 20px rgba(0,0,0,0.5); border: 1px solid #ff8c00; }
+        .modal-content h3 { margin-bottom: 15px; color: #ffffff; font-size: 18px; }
+        .modal-content input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #334155; background: #0b111e; color: #fff; border-radius: 6px; font-size: 16px; outline: none; }
+        .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .modal-btn { width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .btn-add-dep { background: #4cdf79; color: #000; }
+        .btn-add-wit { background: #ff4d4d; color: #fff; }
+        .btn-cancel { background: #475569; color: #fff; }
+        .btn-clear { background: #334155; color: #ff4d4d; font-size: 11px; margin-top: 15px; border: 1px dashed #ff4d4d; }
     </style>
 </head>
 <body>
 
-    <!-- हेडर -->
     <div class="header">
         <a href="mine.html" class="back-btn">⬅</a>
-        <h3>Transaction History</h3>
+        <h3 id="secret-trigger">Transaction History</h3>
     </div>
 
-    <!-- टॉप 2 ऑप्शंस -->
     <div class="tab-container">
         <button id="btn-deposit" class="tab-btn active" onclick="switchTab('deposit')">Deposit</button>
         <button id="btn-withdraw" class="tab-btn" onclick="switchTab('withdraw')">Withdraw</button>
     </div>
 
-    <!-- ट्रांजैक्शंस लिस्ट -->
     <div class="history-list">
-        
-        <!-- DEPOSIT SECTION (No Record) -->
         <div id="deposit-section" class="tab-content">
-            <div class="no-record-container">
+            <div id="deposit-empty" class="no-record-container">
                 <span class="no-record-icon">📄</span>
                 <span class="no-record-text">No record</span>
             </div>
+            <div id="deposit-items"></div>
         </div>
 
-        <!-- WITHDRAW SECTION (No Record) -->
         <div id="withdraw-section" class="tab-content" style="display: none;">
-            <div class="no-record-container">
+            <div id="withdraw-empty" class="no-record-container">
                 <span class="no-record-icon">📄</span>
                 <span class="no-record-text">No record</span>
             </div>
+            <div id="withdraw-items"></div>
         </div>
+    </div>
 
+    <div id="secret-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add Manual Entry</h3>
+            <input type="number" id="balance-input" placeholder="Enter Amount (₹)" />
+            <div class="modal-btn-group">
+                <button class="modal-btn btn-add-dep" onclick="addTransaction('Deposit')">＋ Add to Deposit</button>
+                <button class="modal-btn btn-add-wit" onclick="addTransaction('Withdraw')">－ Add to Withdraw</button>
+                <button class="modal-btn btn-clear" onclick="clearAllData()">⚠️ Clear Saved Data</button>
+                <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        function switchTab(tabType) {
-            let depositBtn = document.getElementById('btn-deposit');
-            let withdrawBtn = document.getElementById('btn-withdraw');
-            
-            let depositSec = document.getElementById('deposit-section');
-            let withdrawSec = document.getElementById('withdraw-section');
+        document.addEventListener("DOMContentLoaded", () => {
+            loadSavedData();
+        });
 
+        function switchTab(tabType) {
+            let depBtn = document.getElementById('btn-deposit');
+            let witBtn = document.getElementById('btn-withdraw');
+            let depSec = document.getElementById('deposit-section');
+            let witSec = document.getElementById('withdraw-section');
             if (tabType === 'deposit') {
-                depositBtn.classList.add('active');
-                withdrawBtn.classList.remove('active');
-                depositSec.style.display = 'block';
-                withdrawSec.style.display = 'none';
+                depBtn.classList.add('active');
+                witBtn.classList.remove('active');
+                depSec.style.display = 'block';
+                witSec.style.display = 'none';
             } else {
-                withdrawBtn.classList.add('active');
-                depositBtn.classList.remove('active');
-                depositSec.style.display = 'none';
-                withdrawSec.style.display = 'block';
+                witBtn.classList.add('active');
+                depBtn.classList.remove('active');
+                depSec.style.display = 'none';
+                witSec.style.display = 'block';
+            }
+        }
+
+        let clickCount = 0;
+        let clickTimer;
+        const triggerText = document.getElementById('secret-trigger');
+        const secretModal = document.getElementById('secret-modal');
+
+        triggerText.addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
+            if (clickCount === 3) {
+                secretModal.style.display = 'block';
+                clickCount = 0;
+            }
+        });
+
+        function closeModal() {
+            secretModal.style.display = 'none';
+            document.getElementById('balance-input').value = '';
+        }
+
+        function addTransaction(type) {
+            const amtInput = document.getElementById('balance-input');
+            const amt = amtInput.value.trim();
+            if (!amt || amt <= 0) {
+                alert("सही अमाउंट डालें!");
+                return;
+            }
+            const now = new Date();
+            const timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const newTx = { type: type, amount: parseFloat(amt).toFixed(2), date: timeStr };
+            let list = JSON.parse(localStorage.getItem('tx_history')) || [];
+            list.unshift(newTx);
+            localStorage.setItem('tx_history', JSON.stringify(list));
+            loadSavedData();
+            closeModal();
+        }
+
+        function loadSavedData() {
+            const depItems = document.getElementById('deposit-items');
+            const witItems = document.getElementById('withdraw-items');
+            const depEmpty = document.getElementById('deposit-empty');
+            const witEmpty = document.getElementById('withdraw-empty');
+            if (!depItems || !witItems) return;
+            depItems.innerHTML = '';
+            witItems.innerHTML = '';
+            let list = JSON.parse(localStorage.getItem('tx_history')) || [];
+            let hasDep = false;
+            let hasWit = false;
+            list.forEach(tx => {
+                let sym = (tx.type === 'Deposit') ? '+' : '-';
+                let cls = (tx.type === 'Deposit') ? 'amount-deposit' : 'amount-withdraw';
+                let html = '<div class="history-card"><div class="card-left"><span class="card-title">' + tx.type + ' Success</span><span class="card-date">' + tx.date + '</span></div><div class="card-amount ' + cls + '">' + sym + '₹' + tx.amount + '</div></div>';
+                if (tx.type === 'Deposit') {
+                    depItems.innerHTML += html;
+                    hasDep = true;
+                } else {
+                    witItems.innerHTML += html;
+                    hasWit = true;
+                }
+            });
+            depEmpty.style.display = hasDep ? 'none' : 'flex';
+            witEmpty.style.display = hasWit ? 'none' : 'flex';
+        }
+
+        function clearAllData() {
+            if (confirm("क्या आप सारा डेटा डिलीट करना चाहते हैं?")) {
+                localStorage.removeItem('tx_history');
+                loadSavedData();
+                closeModal();
             }
         }
     </script>
