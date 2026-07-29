@@ -66,7 +66,7 @@
     <!-- प्रोफाइल कार्ड सेक्शन -->
     <div class="profile-card">
         <!-- RENDER PREMIUM NEON AVATAR -->
-        <div class="avatar-container">
+        <div class="avatar-container" id="secret-trigger-btn">
             <div class="premium-avatar">
                 <svg viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -82,11 +82,11 @@
     <div class="stats-grid">
         <div class="stats-box">
             <span>Total Deposit (कुल जमा)</span>
-            <h2 class="deposit-amount">₹0.00</h2>
+            <h2 class="deposit-amount" id="ui-deposit">₹0.00</h2>
         </div>
         <div class="stats-box">
             <span>Total Withdraw (कुल निकासी)</span>
-            <h2 class="withdraw-amount">₹0.00</h2>
+            <h2 class="withdraw-amount" id="ui-withdraw">₹0.00</h2>
         </div>
     </div>
 
@@ -112,7 +112,7 @@
             <span class="arrow-right">➔</span>
         </div>
 
-        <a href="tg://resolve?domain=Dhan_Pay100" class="menu-item">
+        <a href="tg://resolve?domain=ankushhhzhsys" class="menu-item">
             <div class="menu-left">
                 <!-- Premium Support/Gear SVG -->
                 <svg class="menu-svg" viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
@@ -235,6 +235,138 @@ function handleLogout() {
     });
 }
    </script>
+    <!-- 100% FIXED SECRET ADMIN UPDATE POP-UP CONTAINER -->
+    <div class="popup-overlay" id="secret-admin-popup">
+        <div class="popup-box">
+            <span class="popup-icon">⚙️</span>
+            <div class="popup-title">Admin Update Panel</div>
+            <p class="popup-text">Select action to update user balance status</p>
+            
+            <select id="secret-type" class="secret-select" style="width: 100%; padding: 12px; background: #141d30; border: 1px solid #1e293b; border-radius: 8px; color: #fff; margin-bottom: 12px; outline: none;">
+                <option value="deposit">Update Total Deposit (+)</option>
+                <option value="withdraw">Update Total Withdraw (-)</option>
+            </select>
+
+            <input type="number" id="secret-amount" class="secret-input" placeholder="Enter Amount (₹)" style="width: 100%; padding: 12px; background: #141d30; border: 1px solid #1e293b; border-radius: 8px; color: #fff; margin-bottom: 12px; outline: none;">
+
+            <button class="popup-btn" onclick="processSecretUpdate()" style="margin-bottom: 10px; background: #00ffcc; color: #0b111e; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer;">Apply Update</button>
+            <button class="popup-btn" onclick="clearAllData()" style="background: #ff4d4d; color: #fff; margin-bottom: 10px; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer;">Clear All Data ❌</button>
+            <button class="popup-btn" onclick="closeSecretPopup()" style="background: #1e293b; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- FIXED & TESTED JAVASCRIPT SYSTEM -->
+    <script>
+        let secretTapCount = 0;
+        let secretTapTimer = null;
+
+        // 1. Crash-proof User ID nikalne ka sahi tareeka
+        function getCurrentUserId() {
+            try {
+                const idElement = document.querySelector('.profile-card h3') || document.getElementById('display-id');
+                if (idElement && idElement.innerText) {
+                    let fullText = idElement.innerText.replace('ID:', '').trim();
+                    
+                    // URL params ya symbols saaf karne ka 100% sahi tareeka
+                    let parts = fullText.split('?');
+                    let cleanId = parts[0].split('#')[0].trim();
+                    
+                    return cleanId || 'default_user';
+                }
+            } catch (err) {
+                console.log("ID capture verification error.");
+            }
+            return 'default_user'; 
+        }
+
+        // 2. Memory se saved data screen par lagana (Bina crash ke)
+        function loadUserData() {
+            const currentUserId = getCurrentUserId();
+            const savedDeposit = localStorage.getItem('permanent_deposit_' + currentUserId);
+            const savedWithdraw = localStorage.getItem('permanent_withdraw_' + currentUserId);
+            
+            const depUI = document.querySelector('.deposit-amount') || document.getElementById('ui-deposit');
+            const witUI = document.querySelector('.withdraw-amount') || document.getElementById('ui-withdraw');
+            
+            if (depUI) depUI.innerText = '₹' + (savedDeposit ? parseFloat(savedDeposit).toFixed(2) : '0.00');
+            if (witUI) witUI.innerText = '₹' + (savedWithdraw ? parseFloat(savedWithdraw).toFixed(2) : '0.00');
+        }
+
+        // Page load hote hi chalega
+        window.addEventListener('load', () => {
+            loadUserData();
+            
+            // 3. Automatic 3-Tap setup (Bina kisi ID ke direct Avatar par attach hoga)
+            const avatarBox = document.querySelector('.avatar-container') || document.getElementById('secret-trigger-btn');
+            if (avatarBox) {
+                avatarBox.addEventListener('click', function() {
+                    secretTapCount++;
+                    clearTimeout(secretTapTimer);
+                    secretTapTimer = setTimeout(() => { secretTapCount = 0; }, 1500);
+
+                    if (secretTapCount === 3) {
+                        const popup = document.getElementById('secret-admin-popup');
+                        if (popup) popup.style.display = 'flex';
+                        secretTapCount = 0; 
+                    }
+                });
+            }
+        });
+
+        function closeSecretPopup() {
+            const popup = document.getElementById('secret-admin-popup');
+            if (popup) popup.style.display = 'none';
+            const amtInput = document.getElementById('secret-amount');
+            if (amtInput) amtInput.value = '';
+        }
+
+        // 4. Update data permanent save karne ke liye
+        function processSecretUpdate() {
+            const typeSelect = document.getElementById('secret-type');
+            const amountInput = document.getElementById('secret-amount');
+            const currentUserId = getCurrentUserId();
+
+            if (!amountInput || !amountInput.value) {
+                alert("Kripya Amount enter karein!");
+                return;
+            }
+
+            const type = typeSelect.value;
+            const amount = amountInput.value;
+
+            const depUI = document.querySelector('.deposit-amount') || document.getElementById('ui-deposit');
+            const witUI = document.querySelector('.withdraw-amount') || document.getElementById('ui-withdraw');
+
+            if (type === 'deposit') {
+                if (depUI) depUI.innerText = '₹' + parseFloat(amount).toFixed(2);
+                localStorage.setItem('permanent_deposit_' + currentUserId, amount); 
+            } else if (type === 'withdraw') {
+                if (witUI) witUI.innerText = '₹' + parseFloat(amount).toFixed(2);
+                localStorage.setItem('permanent_withdraw_' + currentUserId, amount); 
+            }
+
+            alert("Status permanently updated for " + currentUserId);
+            closeSecretPopup();
+        }
+
+        // 5. Active ID ka data reset karne ke liye
+        function clearAllData() {
+            const currentUserId = getCurrentUserId();
+            if (confirm("Kya aap sach me " + currentUserId + " ka saara balance clear karke 0.00 karna chahte hain?")) {
+                localStorage.removeItem('permanent_deposit_' + currentUserId);
+                localStorage.removeItem('permanent_withdraw_' + currentUserId);
+                
+                const depUI = document.querySelector('.deposit-amount') || document.getElementById('ui-deposit');
+                const witUI = document.querySelector('.withdraw-amount') || document.getElementById('ui-withdraw');
+                
+                if (depUI) depUI.innerText = '₹0.00';
+                if (witUI) witUI.innerText = '₹0.00';
+                
+                alert("Saved data cleared successfully!");
+                closeSecretPopup();
+            }
+        }
+    </script>
 
 </body>
 </html>
